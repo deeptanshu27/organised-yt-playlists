@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "fix_playlist_view",
+  "version": "1.0",
+
+  "description": ":3",
+
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/feed/playlists"],
+      "js": ["index.js"]
+    }
+  ]
+}
+  
