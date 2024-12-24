@@ -7,7 +7,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/feed/playlists"],
+      "matches": ["*://www.youtube.com/feed/playlists"],
       "js": ["index.js"]
     }
   ]
