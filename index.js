@@ -1,6 +1,42 @@
-// window.onload = () => {
-//     console.log("wow")
-// }
+// Example of MutationObserver
+const targetNode = document.body; // or any specific part of the YouTube DOM
+const config = { childList: true, subtree: true };
+
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        // Reapply your custom changes here
+        console.log("DOM changed, reapplying custom styles");
+        applyCustomChanges();
+    });
+});
+
+observer.observe(targetNode, config);
+
+function applyCustomChanges() {
+    if (container != undefined) {
+        let contents = []
+        for (let i = 0; i < container.children.length; i++) {
+            if (container.children[i].nodeType != 'div') {
+                contents.push(container.children[i])
+            } else {
+                container.children[i].remove()
+            }
+        }
+        if (previousLen != contents.length) {
+            stylize(contents)
+            replaceAll(container)
+            previousLen = contents.length
+        }
+        checks += 1;
+    } else {
+        container = document.getElementById("contents")
+    }
+    if (checks == 11) {
+        clearInterval(loadInterval)
+    }
+}
+
+
 
 let defaultElms = []
 let ytElms = []
@@ -80,25 +116,5 @@ let checks = 0
 let previousLen = 0
 let container = undefined
 const loadInterval = setInterval(() => {
-    if (container != undefined) {
-        let contents = []
-        for (let i = 0; i < container.children.length; i++) {
-            if (container.children[i].nodeType != 'div') {
-                contents.push(container.children[i])
-            } else {
-                container.children[i].remove()
-            }
-        }
-        if (previousLen != contents.length) {
-            stylize(contents)
-            replaceAll(container)
-            previousLen = contents.length
-        }
-        checks += 1;
-    } else {
-        container = document.getElementById("contents")
-    }
-    if (checks == 11) {
-        clearInterval(loadInterval)
-    }
+    console.log("damn gurl")
 }, 200) // maybe increase this instead of stopping completely...
