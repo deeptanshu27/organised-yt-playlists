@@ -2,10 +2,13 @@
 const targetNode = document.body; // or any specific part of the YouTube DOM
 const config = { childList: true, subtree: true };
 
+let styles = "";
+
 const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
         // Reapply your custom changes here
-        console.log("DOM changed, reapplying custom styles");
+        // TODO: This happens a lot
+        // console.log("DOM changed, reapplying custom styles");
         applyCustomChanges();
     });
 });
@@ -24,6 +27,15 @@ function applyCustomChanges() {
         }
         if (previousLen != contents.length) {
             stylize(contents)
+            styles = `
+                #contents h1 {
+                    width: 100%;
+                    text-align: center;
+                    font-size: 2.5rem;
+                    margin-bottom: 30px;
+                    color: ${textColour};
+                }
+                `
             replaceAll(container)
             previousLen = contents.length
         }
@@ -32,7 +44,7 @@ function applyCustomChanges() {
         container = document.getElementById("contents")
     }
     if (checks == 11) {
-        clearInterval(loadInterval)
+        // clearInterval(loadInterval)
     }
 }
 
@@ -41,6 +53,7 @@ function applyCustomChanges() {
 let defaultElms = []
 let ytElms = []
 let customElms = []
+let textColour = "";
 function stylize(contents) {
     for (let i = 0; i < contents.length; i++) {
         let h3 = contents[i].querySelector("h3")
@@ -49,9 +62,13 @@ function stylize(contents) {
                 continue;
             }
 
-            if (h3.innerHTML.includes("Mix - ")) {
+            if (h3.innerHTML.includes("Mix – ")) {
                 ytElms.push(contents[i])
             } else if (h3.innerHTML.includes("Liked videos") || h3.innerHTML.includes("Watch Later")) {
+                if (textColour == "") {
+                    let a = h3.getElementsByTagName("a")[0].getElementsByTagName("span")[0];
+                    textColour = window.getComputedStyle(a)["color"];
+                }
                 defaultElms.push(contents[i])
             } else {
                 customElms.push(contents[i])
@@ -60,15 +77,6 @@ function stylize(contents) {
         contents[i].remove()
     }
 }
-
-const styles = `
-#contents h1 {
-    width: 100%;
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-}
-`
 
 function replaceAll(container) {
     let styleSheet = document.createElement("style")
@@ -115,6 +123,3 @@ function replaceAll(container) {
 let checks = 0
 let previousLen = 0
 let container = undefined
-const loadInterval = setInterval(() => {
-    console.log("damn gurl")
-}, 200) // maybe increase this instead of stopping completely...
